@@ -5,6 +5,8 @@ import {
   getFournisseur,
   deleteFournisseur
 } from "../controllers/fournisseur.controller.js";
+import { validate } from "../middlewares/validate.js";
+import { fournisseurSchema } from "../validations/fournisseur.schema.js";
 
 const router = Router();
 
@@ -27,7 +29,7 @@ const router = Router();
  *         application/json:
  *           schema:
  *             type: object
- *             required: [nom]
+ *             required: [nom, email, telephone]
  *             properties:
  *               nom:
  *                 type: string
@@ -39,7 +41,7 @@ const router = Router();
  *       201:
  *         description: Fournisseur créé
  */
-router.post("/", createFournisseur);
+router.post("/", validate(fournisseurSchema), createFournisseur);
 
 /**
  * @swagger
@@ -57,7 +59,7 @@ router.get("/", getFournisseurs);
  * @swagger
  * /fournisseurs/{id}:
  *   get:
- *     summary: Détail d’un fournisseur
+ *     summary: Détail d'un fournisseur
  *     tags: [Fournisseurs]
  *     parameters:
  *       - in: path
@@ -92,3 +94,4 @@ router.get("/:id", getFournisseur);
 router.delete("/:id", deleteFournisseur);
 
 export default router;
+

@@ -1,12 +1,2 @@
-### creer un categoriee
-GET  http://localhost:3000/
-Content-Type: application/json
-
-# {
-#     "name": "Electronics",
-#     "description": "tessssst"
-# }
-
-### test swagger
-GET http://localhost:3000/api/api-docs
+### creer un categor
 

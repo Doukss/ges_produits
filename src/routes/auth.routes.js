@@ -1,5 +1,7 @@
 import { Router } from "express";
 import jwt from "jsonwebtoken";
+import { validate } from "../middlewares/validate.js";
+import { loginSchema } from "../validations/auth.schema.js";
 
 const router = Router();
 
@@ -22,18 +24,20 @@ const router = Router();
  *         application/json:
  *           schema:
  *             type: object
- *             required: [email]
+ *             required: [email, password]
  *             properties:
  *               email:
+ *                 type: string
+ *               password:
  *                 type: string
  *     responses:
  *       200:
  *         description: Token JWT
  */
-router.post("/login", (req, res) => {
-  const { email } = req.body;
+router.post("/login", validate(loginSchema), (req, res) => {
+  const { email, password } = req.body;
 
-  // ⚠️ TEST SIMPLE (pas encore vraie auth)
+  // Dans une vraie application, on vérifierait les identifiants dans la base de données
   const token = jwt.sign(
     { id: 1, email, role: "admin" },
     process.env.JWT_SECRET,
@@ -44,3 +48,4 @@ router.post("/login", (req, res) => {
 });
 
 export default router;
+

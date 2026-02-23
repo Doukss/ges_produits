@@ -6,12 +6,10 @@ import {
   deleteProduit
 } from "../controllers/produit.controller.js";
 import auth from "../middlewares/auth.js";
+import { validate } from "../middlewares/validate.js";
+import { produitSchema } from "../validations/produit.schema.js";
 
 const router = Router();
-
-
-
-
 
 /**
  * @swagger
@@ -28,8 +26,23 @@ const router = Router();
  *       - bearerAuth: []
  *     summary: Créer un produit
  *     tags: [Produits]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required: [quantite, categorie]
+ *             properties:
+ *               quantite:
+ *                 type: integer
+ *               categorie:
+ *                 type: string
+ *     responses:
+ *       201:
+ *         description: Produit créé
  */
-router.post("/", auth, createProduit);
+router.post("/", auth, validate(produitSchema), createProduit);
 
 /**
  * @swagger
@@ -47,7 +60,7 @@ router.get("/", getProduits);
  * @swagger
  * /produits/{id}:
  *   get:
- *     summary: Détail d’un produit
+ *     summary: Détail d'un produit
  *     tags: [Produits]
  *     parameters:
  *       - in: path
@@ -82,3 +95,4 @@ router.get("/:id", getProduit);
 router.delete("/:id", deleteProduit);
 
 export default router;
+
